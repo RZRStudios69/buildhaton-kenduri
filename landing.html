@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kenduri RSVP — Aina &amp; Harith</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Karla:wght@400;600;700&family=Pinyon+Script&display=swap" rel="stylesheet" />
+<script>
+// Apply the saved theme before first paint so there is no colour flash.
+(function () {
+  try {
+    var savedTheme = window.localStorage.getItem('kenduri-theme');
+    if (savedTheme === 'taman' || savedTheme === 'senja') {
+      document.documentElement.classList.add('theme-' + savedTheme);
+    }
+  } catch (themeLoadError) {
+    // Storage unavailable — the default theme applies.
+  }
+})();
+</script>
+<style>
+  :root {
+    --ink: #3d3630;
+    --ink-soft: #6f655c;
+    --paper: #faf7f2;
+    --card: #ffffff;
+    --line: #e8e1d7;
+    --accent: #9a8467;
+    --accent-soft: #f1ebe2;
+    --outer-bg: #3d3630;
+    --frame-line: #57493f;
+    --flower: #ffffff;
+    --leaf: #7d9070;
+    --stem: #8a7a5c;
+    --button-bg: #3d3630;
+    --button-text: #ffffff;
+    --button-hover: #57493f;
+    --serif: "Cormorant Garamond", "Georgia", "Times New Roman", serif;
+    --sans: "Karla", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    --script: "Pinyon Script", "Cormorant Garamond", cursive;
+  }
+
+  /* ---------- Theme: Taman (botanical sage) ---------- */
+
+  :root.theme-taman {
+    --ink: #26302a;
+    --ink-soft: #55645a;
+    --paper: #e7efe4;
+    --card: #f6f9f4;
+    --line: #c8d6c4;
+    --accent: #3d6349;
+    --accent-soft: #d9e7d9;
+    --outer-bg: #2a342c;
+    --frame-line: #465644;
+    --flower: #f4f7ef;
+    --leaf: #5f7f5e;
+    --stem: #6d7f62;
+    --button-bg: #3d6349;
+    --button-hover: #32523c;
+  }
+
+  /* ---------- Theme: Senja (dark evening, antique gold) ---------- */
+
+  :root.theme-senja {
+    --ink: #ece4d6;
+    --ink-soft: #b3a690;
+    --paper: #241f1a;
+    --card: #2d2620;
+    --line: #40372d;
+    --accent: #c9a86a;
+    --accent-soft: #3a3126;
+    --outer-bg: #191510;
+    --frame-line: #4a3e2f;
+    --flower: #e8dcc4;
+    --leaf: #8a7a52;
+    --stem: #a08b5f;
+    --button-bg: #c9a86a;
+    --button-text: #262019;
+    --button-hover: #b8965c;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--outer-bg);
+    line-height: 1.55;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 28px 16px;
+  }
+
+  .frame {
+    position: relative;
+    width: 100%;
+    max-width: 960px;
+    background: var(--paper);
+    border: 1px solid var(--frame-line);
+    padding: 48px 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 36px;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  @media (max-width: 719px) {
+    body { padding: 16px 12px; }
+    .frame { grid-template-columns: 1fr; padding: 36px 24px; gap: 28px; }
+    .couple-illustration { max-width: 260px; margin: 0 auto; }
+  }
+
+  /* ---------- Illustration ---------- */
+
+  .couple-illustration { width: 100%; display: block; }
+  .couple-illustration svg { width: 100%; height: auto; display: block; }
+
+  /* ---------- Text block ---------- */
+
+  .landing-text { text-align: center; padding: 12px 8px; }
+
+  .landing-names {
+    font-family: var(--script);
+    font-size: 64px;
+    font-weight: 400;
+    line-height: 1.1;
+    margin: 0 0 6px;
+    color: var(--ink);
+  }
+
+  @media (max-width: 719px) {
+    .landing-names { font-size: 48px; }
+  }
+
+  .landing-kicker {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 10px;
+  }
+
+  .landing-date {
+    font-family: var(--serif);
+    font-size: 22px;
+    color: var(--ink-soft);
+    margin: 0 0 16px;
+  }
+
+  .landing-blurb {
+    font-size: 14px;
+    color: var(--ink-soft);
+    max-width: 34em;
+    margin: 0 auto 26px;
+  }
+
+  .register-button {
+    display: inline-block;
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--button-text);
+    background: var(--button-bg);
+    border: none;
+    border-radius: 6px;
+    padding: 14px 34px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.15s ease;
+  }
+
+  .register-button:hover { background: var(--button-hover); }
+
+  .register-button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  .enter-hint {
+    margin: 14px 0 0;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+  }
+
+  .enter-hint kbd {
+    font-family: var(--sans);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 1px 6px;
+    background: var(--card);
+  }
+
+  /* ---------- Floral decorations ---------- */
+
+  .flourish { position: absolute; pointer-events: none; color: var(--leaf); }
+  .flourish svg { display: block; width: 100%; height: 100%; }
+
+  .flourish.fl-bottom-left { left: -18px; bottom: -14px; width: 130px; height: 130px; transform: rotate(-12deg); }
+  .flourish.fl-bottom-right { right: -20px; bottom: -18px; width: 150px; height: 150px; transform: rotate(160deg); }
+  .flourish.fl-top-right { right: 26px; top: 18px; width: 74px; height: 74px; transform: rotate(38deg); }
+
+  @media (max-width: 719px) {
+    .flourish.fl-top-right { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="frame">
+
+  <!-- Decorative florals -->
+  <span class="flourish fl-bottom-left" aria-hidden="true">
+    <svg viewBox="0 0 100 100" fill="none">
+      <path d="M20 95 C 30 70, 28 50, 45 30" stroke="var(--stem)" stroke-width="2" />
+      <path d="M45 30 C 50 22, 58 18, 66 20" stroke="var(--stem)" stroke-width="2" />
+      <g>
+        <circle cx="66" cy="14" r="3.5" fill="var(--flower)" />
+        <ellipse cx="60" cy="18" rx="4" ry="7" fill="var(--flower)" transform="rotate(-40 60 18)" />
+        <ellipse cx="72" cy="18" rx="4" ry="7" fill="var(--flower)" transform="rotate(40 72 18)" />
+        <ellipse cx="63" cy="25" rx="4" ry="7" fill="var(--flower)" transform="rotate(-95 63 25)" />
+        <ellipse cx="69" cy="25" rx="4" ry="7" fill="var(--flower)" transform="rotate(95 69 25)" />
+        <circle cx="66" cy="20" r="2.4" fill="var(--accent)" />
+      </g>
+      <path d="M30 68 C 22 62, 20 54, 24 46" stroke="var(--stem)" stroke-width="1.6" />
+      <ellipse cx="27" cy="52" rx="8" ry="4" fill="var(--leaf)" transform="rotate(-35 27 52)" />
+      <ellipse cx="24" cy="60" rx="7" ry="3.5" fill="var(--leaf)" transform="rotate(25 24 60)" />
+    </svg>
+  </span>
+
+  <span class="flourish fl-bottom-right" aria-hidden="true">
+    <svg viewBox="0 0 100 100" fill="none">
+      <path d="M75 95 C 68 72, 70 52, 55 32" stroke="var(--stem)" stroke-width="2" />
+      <path d="M55 32 C 48 25, 47 17, 50 10" stroke="var(--stem)" stroke-width="2" />
+      <g>
+        <circle cx="50" cy="8" r="3" fill="var(--flower)" />
+        <ellipse cx="45" cy="12" rx="3.4" ry="6" fill="var(--flower)" transform="rotate(-40 45 12)" />
+        <ellipse cx="55" cy="12" rx="3.4" ry="6" fill="var(--flower)" transform="rotate(40 55 12)" />
+        <ellipse cx="48" cy="18" rx="3.4" ry="6" fill="var(--flower)" transform="rotate(-95 48 18)" />
+        <ellipse cx="52" cy="18" rx="3.4" ry="6" fill="var(--flower)" transform="rotate(95 52 18)" />
+        <circle cx="50" cy="13" r="2" fill="var(--accent)" />
+      </g>
+      <path d="M68 70 C 76 64, 79 56, 76 48" stroke="var(--stem)" stroke-width="1.6" />
+      <ellipse cx="74" cy="54" rx="7" ry="3.5" fill="var(--leaf)" transform="rotate(35 74 54)" />
+      <ellipse cx="76" cy="62" rx="6" ry="3" fill="var(--leaf)" transform="rotate(-25 76 62)" />
+    </svg>
+  </span>
+
+  <span class="flourish fl-top-right" aria-hidden="true">
+    <svg viewBox="0 0 100 100" fill="none">
+      <path d="M50 90 C 50 65, 50 45, 50 25" stroke="var(--stem)" stroke-width="2" />
+      <g>
+        <circle cx="50" cy="18" r="3.2" fill="var(--flower)" />
+        <ellipse cx="45" cy="22" rx="3.6" ry="6.5" fill="var(--flower)" transform="rotate(-40 45 22)" />
+        <ellipse cx="55" cy="22" rx="3.6" ry="6.5" fill="var(--flower)" transform="rotate(40 55 22)" />
+        <ellipse cx="48" cy="29" rx="3.6" ry="6.5" fill="var(--flower)" transform="rotate(-95 48 29)" />
+        <ellipse cx="52" cy="29" rx="3.6" ry="6.5" fill="var(--flower)" transform="rotate(95 52 29)" />
+        <circle cx="50" cy="23" r="2.2" fill="var(--accent)" />
+      </g>
+      <ellipse cx="43" cy="50" rx="7" ry="3.5" fill="var(--leaf)" transform="rotate(-30 43 50)" />
+      <ellipse cx="57" cy="62" rx="7" ry="3.5" fill="var(--leaf)" transform="rotate(30 57 62)" />
+    </svg>
+  </span>
+
+  <!-- Couple illustration -->
+  <div class="couple-illustration" aria-hidden="true">
+    <svg viewBox="0 0 300 340" fill="none">
+      <!-- ground shadow -->
+      <ellipse cx="150" cy="324" rx="105" ry="9" fill="var(--accent-soft)" />
+
+      <!-- ============ woman (left) ============ -->
+      <g>
+        <!-- hair back layer -->
+        <path d="M100 122 C 98 100, 108 88, 124 88 C 140 88, 150 100, 148 122 L 148 152 C 148 164, 142 172, 134 176 L 112 176 C 104 170, 100 160, 100 150 Z" fill="#3a2f28" />
+
+        <!-- dress -->
+        <path d="M110 318 C 104 260, 108 212, 114 166 L 134 166 C 140 212, 144 260, 138 318 Z" fill="#f7f3ea" stroke="var(--line)" stroke-width="1.2" />
+        <!-- dress neckline -->
+        <path d="M114 166 C 119 175, 129 175, 134 166" stroke="var(--line)" stroke-width="1.2" fill="none" />
+
+        <!-- neck (short, from under the chin into the dress) -->
+        <path d="M118 146 L 117 170 L 131 170 L 130 146 Z" fill="#e3bd99" />
+
+        <!-- head -->
+        <ellipse cx="124" cy="134" rx="17" ry="20" fill="#efd3b3" />
+        <!-- face: closed happy eyes + small smile -->
+        <path d="M117 134 Q 120 137, 123 134" stroke="#a8866a" stroke-width="1.4" stroke-linecap="round" fill="none" />
+        <path d="M127 134 Q 130 137, 133 134" stroke="#a8866a" stroke-width="1.4" stroke-linecap="round" fill="none" />
+        <path d="M122 143 Q 125 145, 128 143" stroke="#b98d68" stroke-width="1.4" stroke-linecap="round" fill="none" />
+        <!-- blush -->
+        <ellipse cx="114" cy="140" rx="3" ry="1.8" fill="#e8b4a0" opacity="0.6" />
+        <ellipse cx="135" cy="140" rx="3" ry="1.8" fill="#e8b4a0" opacity="0.6" />
+
+        <!-- hair front: fringe + side strands -->
+        <path d="M107 132 C 105 112, 112 102, 124 102 C 136 102, 143 112, 141 130 C 138 118, 132 112, 124 112 C 116 112, 110 120, 107 132 Z" fill="#3a2f28" />
+        <path d="M107 128 C 102 138, 102 152, 107 162 C 110 154, 109 140, 109 134 Z" fill="#3a2f28" />
+        <path d="M141 128 C 146 138, 146 152, 141 162 C 138 154, 139 140, 139 134 Z" fill="#3a2f28" />
+
+        <!-- hair bow -->
+        <path d="M136 104 L 148 98 L 146 111 Z" fill="#ffffff" stroke="var(--line)" stroke-width="1" />
+        <path d="M136 104 L 127 96 L 126 109 Z" fill="#ffffff" stroke="var(--line)" stroke-width="1" />
+        <circle cx="136" cy="104" r="3" fill="#ffffff" stroke="var(--line)" stroke-width="1" />
+
+        <!-- her left arm (her own side, hand holding bouquet) -->
+        <path d="M113 170 C 106 192, 104 212, 107 228" stroke="#e3bd99" stroke-width="9" stroke-linecap="round" />
+
+        <!-- bouquet in her hand -->
+        <g>
+          <path d="M107 230 L 106 250" stroke="var(--stem)" stroke-width="2" />
+          <ellipse cx="103" cy="244" rx="5" ry="2.4" fill="var(--leaf)" transform="rotate(-30 103 244)" />
+          <ellipse cx="110" cy="248" rx="5" ry="2.4" fill="var(--leaf)" transform="rotate(30 110 248)" />
+          <circle cx="107" cy="226" r="4" fill="var(--flower)" stroke="var(--line)" stroke-width="0.8" />
+          <circle cx="101" cy="232" r="4" fill="var(--flower)" stroke="var(--line)" stroke-width="0.8" />
+          <circle cx="113" cy="232" r="4" fill="var(--flower)" stroke="var(--line)" stroke-width="0.8" />
+          <circle cx="107" cy="232" r="2.4" fill="var(--accent)" />
+        </g>
+
+        <!-- her right arm wrapping to the man's back -->
+        <path d="M130 172 C 148 180, 164 192, 176 208 C 180 213, 177 219, 171 216 C 157 207, 142 198, 130 188 Z" fill="#e3bd99" />
+      </g>
+
+      <!-- ============ man (right) ============ -->
+      <g>
+        <!-- legs -->
+        <path d="M170 262 L 170 318 L 184 318 L 184 262 Z" fill="#2c2620" />
+        <path d="M196 262 L 196 318 L 210 318 L 210 262 Z" fill="#2c2620" />
+        <!-- shoes -->
+        <path d="M166 318 L 184 318 L 184 324 L 162 324 C 162 320, 163 318, 166 318 Z" fill="#1d1915" />
+        <path d="M210 318 L 214 318 C 217 318, 218 320, 218 324 L 196 324 L 196 318 Z" fill="#1d1915" />
+
+        <!-- jacket body -->
+        <path d="M164 262 C 160 226, 164 196, 175 168 L 205 168 C 216 196, 220 226, 216 262 Z" fill="#2c2620" />
+        <!-- shirt -->
+        <path d="M182 168 L 190 240 L 198 168 Z" fill="#ffffff" />
+        <!-- tie -->
+        <path d="M188 172 L 193 176 L 190 218 L 186 176 Z" fill="#5a4632" />
+        <circle cx="190.5" cy="173" r="2" fill="#5a4632" />
+        <!-- lapels -->
+        <path d="M175 168 L 187 176 L 178 200 Z" fill="#241f19" />
+        <path d="M205 168 L 193 176 L 202 200 Z" fill="#241f19" />
+        <!-- buttons -->
+        <circle cx="190" cy="246" r="1.6" fill="#4a3f35" />
+        <circle cx="190" cy="254" r="1.6" fill="#4a3f35" />
+
+        <!-- neck (short, from under the chin into the collar) -->
+        <path d="M184 148 L 183 170 L 197 170 L 196 148 Z" fill="#e3bd99" />
+
+        <!-- head -->
+        <ellipse cx="190" cy="136" rx="17" ry="20" fill="#efd3b3" />
+        <!-- face: eyes + smile -->
+        <circle cx="183" cy="134" r="1.6" fill="#3a2f28" />
+        <circle cx="197" cy="134" r="1.6" fill="#3a2f28" />
+        <path d="M184 145 Q 190 149, 196 145" stroke="#b98d68" stroke-width="1.6" stroke-linecap="round" fill="none" />
+        <!-- blush -->
+        <ellipse cx="180" cy="141" rx="3" ry="1.8" fill="#e8b4a0" opacity="0.5" />
+        <ellipse cx="201" cy="141" rx="3" ry="1.8" fill="#e8b4a0" opacity="0.5" />
+
+        <!-- hair -->
+        <path d="M173 134 C 172 114, 178 102, 190 102 C 202 102, 208 114, 207 134 C 205 120, 200 112, 190 112 C 180 112, 175 120, 173 134 Z" fill="#241f19" />
+
+        <!-- his right arm resting on her shoulder -->
+        <path d="M177 174 C 166 168, 150 164, 138 168 C 132 170, 132 176, 138 177 C 150 177, 164 182, 175 192 Z" fill="#2c2620" />
+        <circle cx="136" cy="172" r="6" fill="#e3bd99" />
+      </g>
+    </svg>
+  </div>
+
+  <!-- Text block -->
+  <div class="landing-text">
+    <p class="landing-kicker">Walimatul Urus</p>
+    <h1 class="landing-names" id="landing-names">Aina &amp; Harith</h1>
+    <p class="landing-kicker">Wedding Party</p>
+    <p class="landing-date" id="landing-date">12 . 12 . 2026</p>
+    <p class="landing-blurb" id="landing-blurb">
+      With the blessing of our families, we invite you to celebrate our wedding at
+      Dewan Seri Melati, Shah Alam. Come for the kompang, stay for the nasi minyak.
+    </p>
+    <a href="index.html" class="register-button" id="register-button">Register Now</a>
+    <p class="enter-hint">or press <kbd>Enter</kbd> to open the invitation</p>
+  </div>
+
+</div>
+
+<script src="wedding-data.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  // ------------------------------------------------------------------
+  // Landing content follows whatever the couple set in the admin page.
+  // ------------------------------------------------------------------
+
+  var weddingData = KenduriData.loadWeddingData();
+
+  document.title = 'Kenduri RSVP — ' + weddingData.coupleShort;
+  document.getElementById('landing-names').textContent = weddingData.coupleShort;
+
+  // "Saturday, 12 December 2026" -> "12 . 12 . 2026" for the landing display.
+  var monthNames = [
+    'january', 'february', 'march', 'april', 'may', 'june',
+    'july', 'august', 'september', 'october', 'november', 'december'
+  ];
+  var dateMatch = weddingData.weddingDate.match(/(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})/);
+  if (dateMatch) {
+    var monthNumber = monthNames.indexOf(dateMatch[2].toLowerCase()) + 1;
+    if (monthNumber > 0) {
+      document.getElementById('landing-date').textContent =
+        dateMatch[1] + ' . ' + monthNumber + ' . ' + dateMatch[3];
+    } else {
+      document.getElementById('landing-date').textContent = weddingData.weddingDate;
+    }
+  } else {
+    document.getElementById('landing-date').textContent = weddingData.weddingDate;
+  }
+
+  var venueFirstLine = weddingData.venue.split('\n')[0].trim();
+  document.getElementById('landing-blurb').textContent =
+    weddingData.tagline + ' ' + venueFirstLine + '.';
+
+  // ------------------------------------------------------------------
+  // Enter opens the guest view, like the Register button. Both mark the
+  // arrival in sessionStorage so the guest page accepts them; a plain
+  // refresh of the guest page has no mark and returns to the landing.
+  // ------------------------------------------------------------------
+
+  var ARRIVAL_FLAG = 'kenduri-arrived-internally';
+
+  function markArrivalAndOpenGuestPage() {
+    try {
+      window.sessionStorage.setItem(ARRIVAL_FLAG, 'yes');
+    } catch (flagError) {
+      // Storage unavailable — the guest page then skips its redirect too.
+    }
+    window.location.href = 'index.html';
+  }
+
+  document.getElementById('register-button').addEventListener('click', markArrivalAndOpenGuestPage);
+
+  document.addEventListener('keydown', function (keyPressEvent) {
+    if (keyPressEvent.key === 'Enter') {
+      markArrivalAndOpenGuestPage();
+    }
+  });
+})();
+</script>
+</body>
+</html>

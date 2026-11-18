@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kenduri RSVP — Aina &amp; Harith</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Karla:wght@400;600;700&display=swap" rel="stylesheet" />
+<script>
+// Apply the saved theme before first paint so there is no colour flash.
+(function () {
+  try {
+    var savedTheme = window.localStorage.getItem('kenduri-theme');
+    if (savedTheme === 'taman' || savedTheme === 'senja') {
+      document.documentElement.classList.add('theme-' + savedTheme);
+    }
+  } catch (themeLoadError) {
+    // Storage unavailable — the default theme applies.
+  }
+})();
+</script>
+<style>
+  :root {
+    --ink: #3d3630;
+    --ink-soft: #6f655c;
+    --paper: #faf7f2;
+    --card: #ffffff;
+    --line: #e8e1d7;
+    --accent: #9a8467;
+    --accent-soft: #f1ebe2;
+    --yes: #4a6b52;
+    --yes-soft: #eaf1eb;
+    --no: #a05a4e;
+    --no-soft: #f7ece9;
+    --radius: 14px;
+    --serif: "Cormorant Garamond", "Georgia", "Times New Roman", serif;
+    --sans: "Karla", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    --button-bg: #3d3630;
+    --button-text: #ffffff;
+    --button-hover: #57493f;
+  }
+
+  /* ---------- Theme: Taman (botanical sage) ---------- */
+
+  :root.theme-taman {
+    --ink: #26302a;
+    --ink-soft: #55645a;
+    --paper: #e7efe4;
+    --card: #f6f9f4;
+    --line: #c8d6c4;
+    --accent: #3d6349;
+    --accent-soft: #d9e7d9;
+    --yes: #3f6b4f;
+    --yes-soft: #e4efe6;
+    --no: #965848;
+    --no-soft: #f6eae6;
+    --button-bg: #3d6349;
+    --button-hover: #32523c;
+  }
+
+  /* ---------- Theme: Senja (dark evening, antique gold) ---------- */
+
+  :root.theme-senja {
+    --ink: #ece4d6;
+    --ink-soft: #b3a690;
+    --paper: #241f1a;
+    --card: #2d2620;
+    --line: #40372d;
+    --accent: #c9a86a;
+    --accent-soft: #3a3126;
+    --yes: #a3c9ae;
+    --yes-soft: #2c3a2f;
+    --no: #d6a093;
+    --no-soft: #3d2b26;
+    --button-bg: #c9a86a;
+    --button-text: #262019;
+    --button-hover: #b8965c;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+  }
+
+  .page {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 40px 20px 64px;
+  }
+
+  /* ---------- Responsive: tablets and up ---------- */
+
+  @media (min-width: 720px) {
+    .page {
+      max-width: 680px;
+      padding: 56px 32px 80px;
+    }
+
+    .wedding-hero .couple-names { font-size: 52px; }
+
+    .section { padding: 32px 30px; }
+  }
+
+  /* ---------- Responsive: desktop ---------- */
+
+  @media (min-width: 1024px) {
+    .page {
+      max-width: 920px;
+    }
+
+    /* Details + RSVP sit side by side; wishes span below */
+    .layout-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    .section-wishes { grid-column: 1 / -1; }
+
+    .detail-list { gap: 18px; }
+
+    .detail-label { flex-basis: 90px; }
+
+    .wedding-hero .couple-names { font-size: 60px; }
+  }
+
+  /* ---------- Header ---------- */
+
+  .wedding-hero { text-align: center; padding: 24px 0 8px; }
+
+  .wedding-hero .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .wedding-hero .couple-names {
+    font-family: var(--serif);
+    font-size: 42px;
+    font-weight: 500;
+    line-height: 1.15;
+    margin: 12px 0 8px;
+  }
+
+  .wedding-hero .tagline {
+    color: var(--ink-soft);
+    font-style: italic;
+    font-family: var(--serif);
+    font-size: 17px;
+  }
+
+  /* ---------- Sections ---------- */
+
+  .section {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 26px 22px;
+    margin-top: 28px;
+  }
+
+  .section-title {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 500;
+    margin: 0 0 4px;
+  }
+
+  .section-purpose {
+    color: var(--ink-soft);
+    font-size: 13px;
+    margin: 0 0 20px;
+  }
+
+  /* ---------- Wedding details ---------- */
+
+  .detail-list { display: grid; gap: 14px; }
+
+  .detail-row {
+    display: flex;
+    gap: 14px;
+    align-items: baseline;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .detail-row:last-child { border-bottom: none; padding-bottom: 0; }
+
+  .detail-label {
+    flex: 0 0 74px;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .detail-value { font-size: 15px; }
+
+  .detail-value strong { font-family: var(--serif); font-size: 18px; font-weight: 600; }
+
+  .music-note {
+    margin-top: 20px;
+    background: var(--accent-soft);
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+
+  .music-note .music-title {
+    color: var(--ink);
+    font-weight: 600;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .music-toggle {
+    display: inline-block;
+    margin-top: 10px;
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 7px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    background: var(--card);
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .music-toggle:hover { background: var(--accent-soft); }
+
+  .music-toggle[aria-pressed="true"] {
+    background: var(--button-bg);
+    border-color: var(--button-bg);
+    color: var(--button-text);
+  }
+
+  .admin-link-button {
+    display: inline-block;
+    margin-top: 24px;
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 9px 18px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+    background: var(--card);
+    cursor: pointer;
+    text-decoration: none;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+
+  .admin-link-button:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ---------- Forms ---------- */
+
+  .form-field { margin-bottom: 16px; }
+
+  .form-field label {
+    display: block;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 6px;
+  }
+
+  .form-field input[type="text"],
+  .form-field textarea {
+    width: 100%;
+    font-family: var(--sans);
+    font-size: 15px;
+    color: var(--ink);
+    padding: 11px 13px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--paper);
+    outline: none;
+    transition: border-color 0.15s ease;
+  }
+
+  .form-field textarea { resize: vertical; min-height: 76px; }
+
+  .form-field input:focus,
+  .form-field textarea:focus { border-color: var(--accent); }
+
+  .choice-row { display: flex; gap: 12px; }
+
+  .choice-option { flex: 1; position: relative; }
+
+  .choice-option input {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    cursor: pointer;
+  }
+
+  .choice-option span {
+    display: block;
+    text-align: center;
+    padding: 11px 12px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--paper);
+    font-size: 15px;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  }
+
+  .choice-option input:checked + span {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .choice-option input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .submit-button {
+    width: 100%;
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--button-text);
+    background: var(--button-bg);
+    border: none;
+    border-radius: 10px;
+    padding: 13px 16px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  .submit-button:hover { background: var(--button-hover); }
+
+  .form-status {
+    margin: 12px 0 0;
+    font-size: 13px;
+    color: var(--yes);
+    min-height: 18px;
+  }
+
+  /* ---------- Lists ---------- */
+
+  .entry-list-title {
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 26px 0 12px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+
+  .entry-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+
+  .rsvp-entry,
+  .wish-entry {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+
+  .rsvp-entry .rsvp-head { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+
+  .rsvp-entry .guest-name { font-weight: 600; }
+
+  .attendance-badge {
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 999px;
+  }
+
+  .attendance-badge.attending { color: var(--yes); background: var(--yes-soft); }
+
+  .attendance-badge.not-attending { color: var(--no); background: var(--no-soft); }
+
+  .rsvp-entry .rsvp-note,
+  .wish-entry .wish-from { color: var(--ink-soft); font-size: 13px; margin-top: 3px; }
+
+  .wish-entry .wish-text { font-family: var(--serif); font-size: 17px; line-height: 1.4; }
+
+  /* ---------- Wishlist ---------- */
+
+  .wishlist { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+
+  .wishlist-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+
+  .wishlist-item .item-name { font-size: 15px; font-weight: 600; }
+
+  .wishlist-item .item-note { color: var(--ink-soft); font-size: 12px; margin-top: 1px; }
+
+  .item-status {
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    background: transparent;
+    font-family: var(--sans);
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .item-status:hover { background: var(--accent-soft); }
+
+  .wishlist-item.taken { opacity: 0.75; }
+
+  .wishlist-item.taken .item-name { text-decoration: line-through; text-decoration-thickness: 1px; }
+
+  .wishlist-item.taken .item-status {
+    border-color: transparent;
+    background: var(--yes-soft);
+    color: var(--yes);
+    cursor: default;
+  }
+
+  /* ---------- Footer ---------- */
+
+  .page-footer {
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: 12px;
+    margin-top: 40px;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 14px;
+  }
+</style>
+</head>
+<body>
+<main class="page">
+
+  <header class="wedding-hero">
+    <p class="eyebrow">Walimatul Urus</p>
+    <h1 class="couple-names" id="hero-couple-short">Aina &amp; Harith</h1>
+    <p class="tagline" id="hero-tagline">With the blessing of our families, we invite you to celebrate with us.</p>
+  </header>
+
+  <div class="layout-grid">
+
+  <!-- ==================== Section 1: Wedding Details ==================== -->
+
+  <section class="section" aria-labelledby="details-title">
+    <h2 class="section-title" id="details-title">Wedding Details</h2>
+    <p class="section-purpose">The main invitation information, at a glance.</p>
+
+    <div class="detail-list">
+      <div class="detail-row">
+        <span class="detail-label">Couple</span>
+        <span class="detail-value"><strong id="detail-couple-full">Aina Sofea binti Roslan &amp; Harith Danial bin Zulkifli</strong></span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Date</span>
+        <span class="detail-value" id="detail-date">Saturday, 12 December 2026</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Time</span>
+        <span class="detail-value" id="detail-time">11:00 am — 4:00 pm</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Venue</span>
+        <span class="detail-value" id="detail-venue">Dewan Seri Melati, Taman Sri Muda,<br />Shah Alam, Selangor</span>
+      </div>
+    </div>
+
+    <div class="music-note">
+      <span class="music-title">Music &amp; playlist</span>
+      <span id="detail-music">
+        A soft kompang ensemble welcomes guests at the door, and a laid-back acoustic playlist
+        (Malay and English favourites) plays through lunch. If a song means something to the
+        two of us, drop it in your RSVP message below!
+      </span>
+      <button type="button" class="music-toggle" id="music-toggle" aria-pressed="false">
+        Play sample kompang beat
+      </button>
+    </div>
+  </section>
+
+  <!-- ==================== Section 2: RSVP ==================== -->
+
+  <section class="section" aria-labelledby="rsvp-title">
+    <h2 class="section-title" id="rsvp-title">RSVP</h2>
+    <p class="section-purpose">Let us know if you can make it — submit your response right here.</p>
+
+    <form id="rsvp-form" novalidate>
+      <div class="form-field">
+        <label for="rsvp-name-input">Your name</label>
+        <input type="text" id="rsvp-name-input" placeholder="e.g. Farah Izzati" autocomplete="name" />
+      </div>
+
+      <div class="form-field">
+        <label>Will you be attending?</label>
+        <div class="choice-row">
+          <label class="choice-option">
+            <input type="radio" name="attendance-choice" value="attending" />
+            <span>Yes, I'll be there</span>
+          </label>
+          <label class="choice-option">
+            <input type="radio" name="attendance-choice" value="not-attending" />
+            <span>Sorry, can't make it</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label for="rsvp-message-input">Wishes or short message (optional)</label>
+        <textarea id="rsvp-message-input" placeholder="Congrats, a doa, or a song for the playlist…"></textarea>
+      </div>
+
+      <button type="submit" class="submit-button">Send RSVP</button>
+      <p class="form-status" id="rsvp-status" role="status" aria-live="polite"></p>
+    </form>
+
+    <h3 class="entry-list-title">Responses so far</h3>
+    <ul class="entry-list" id="rsvp-list"></ul>
+  </section>
+
+  <!-- ==================== Section 3: Wishes & Wishlist ==================== -->
+
+  <section class="section section-wishes" aria-labelledby="wishes-title">
+    <h2 class="section-title" id="wishes-title">Wishes &amp; Wishlist</h2>
+    <p class="section-purpose">Wishes guests left with their RSVP, plus gifts you can mark as taken.</p>
+
+    <h3 class="entry-list-title">Wishes board</h3>
+    <ul class="entry-list" id="wish-list"></ul>
+
+    <h3 class="entry-list-title">Wishlist</h3>
+    <ul class="wishlist" id="wishlist"></ul>
+  </section>
+
+  </div>
+
+  <footer class="page-footer">
+    Terima kasih — thank you for being part of our story.<br />
+    <span style="font-style: normal; font-family: var(--sans); font-size: 11px;">
+      Sample data for preview — entries are kept in this browser only.
+    </span>
+    <div>
+      <a href="admin.html" class="admin-link-button">Admin</a>
+    </div>
+  </footer>
+
+</main>
+
+<script src="wedding-data.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  // ------------------------------------------------------------------
+  // Refresh returns to the landing page. Arriving from the landing or
+  // the admin page sets the marker; a plain reload has none and is
+  // sent back.
+  // ------------------------------------------------------------------
+
+  var ARRIVAL_FLAG = 'kenduri-arrived-internally';
+
+  var arrivedInternally = false;
+  try {
+    arrivedInternally = window.sessionStorage.getItem(ARRIVAL_FLAG) === 'yes';
+    if (arrivedInternally) {
+      window.sessionStorage.removeItem(ARRIVAL_FLAG);
+    }
+  } catch (flagError) {
+    // Storage unavailable — keep the guest page open rather than looping.
+    arrivedInternally = true;
+  }
+
+  if (!arrivedInternally) {
+    window.location.replace('landing.html');
+    return;
+  }
+
+  // The Admin link leads to admin.html — mark that arrival as internal.
+  document.querySelectorAll('a[href$="admin.html"]').forEach(function (internalLink) {
+    internalLink.addEventListener('click', function (clickEvent) {
+      clickEvent.preventDefault();
+      try {
+        window.sessionStorage.setItem(ARRIVAL_FLAG, 'yes');
+      } catch (flagSetError) {
+        // Storage unavailable — the admin page then skips its redirect too.
+      }
+      window.location.href = 'admin.html';
+    });
+  });
+
+  // ------------------------------------------------------------------
+  // Data (shared with the admin page via localStorage)
+  // ------------------------------------------------------------------
+
+  var weddingData = KenduriData.loadWeddingData();
+  var rsvps = weddingData.rsvps;
+  var wishes = weddingData.wishes;
+  var wishlistItems = weddingData.wishlistItems;
+
+  var rsvpListElement = document.getElementById('rsvp-list');
+  var wishListElement = document.getElementById('wish-list');
+  var wishlistElement = document.getElementById('wishlist');
+
+  /**
+   * @ Public methods
+   */
+
+  function renderWeddingDetails() {
+    document.title = 'Kenduri RSVP — ' + weddingData.coupleShort;
+    document.getElementById('hero-couple-short').textContent = weddingData.coupleShort;
+    document.getElementById('hero-tagline').textContent = weddingData.tagline;
+    document.getElementById('detail-couple-full').textContent = weddingData.coupleFull;
+    document.getElementById('detail-date').textContent = weddingData.weddingDate;
+    document.getElementById('detail-time').textContent = weddingData.weddingTime;
+
+    // Venue keeps its line breaks when the admin edits it across lines.
+    var venueElement = document.getElementById('detail-venue');
+    venueElement.innerHTML = '';
+    weddingData.venue.split('\n').forEach(function (venueLine, lineIndex, allLines) {
+      if (lineIndex > 0) {
+        venueElement.appendChild(document.createElement('br'));
+      }
+      venueElement.appendChild(document.createTextNode(venueLine));
+    });
+
+    document.getElementById('detail-music').textContent = weddingData.musicNote;
+  }
+
+  function renderRsvpList() {
+    rsvpListElement.innerHTML = '';
+
+    rsvps.forEach(function (rsvpEntry) {
+      var listItem = document.createElement('li');
+      listItem.className = 'rsvp-entry';
+
+      var headRow = document.createElement('div');
+      headRow.className = 'rsvp-head';
+
+      var guestNameElement = document.createElement('span');
+      guestNameElement.className = 'guest-name';
+      guestNameElement.textContent = rsvpEntry.guestName;
+
+      var attendanceBadge = document.createElement('span');
+      attendanceBadge.className =
+        'attendance-badge ' + (rsvpEntry.attending ? 'attending' : 'not-attending');
+      attendanceBadge.textContent = rsvpEntry.attending ? 'Attending' : 'Not attending';
+
+      headRow.appendChild(guestNameElement);
+      headRow.appendChild(attendanceBadge);
+      listItem.appendChild(headRow);
+
+      if (rsvpEntry.message) {
+        var noteElement = document.createElement('div');
+        noteElement.className = 'rsvp-note';
+        noteElement.textContent = '\u201C' + rsvpEntry.message + '\u201D';
+        listItem.appendChild(noteElement);
+      }
+
+      rsvpListElement.appendChild(listItem);
+    });
+  }
+
+  function renderWishList() {
+    wishListElement.innerHTML = '';
+
+    wishes.forEach(function (wishEntry) {
+      var listItem = document.createElement('li');
+      listItem.className = 'wish-entry';
+
+      var wishTextElement = document.createElement('div');
+      wishTextElement.className = 'wish-text';
+      wishTextElement.textContent = '\u201C' + wishEntry.wishText + '\u201D';
+
+      var wishFromElement = document.createElement('div');
+      wishFromElement.className = 'wish-from';
+      wishFromElement.textContent = '— ' + wishEntry.guestName;
+
+      listItem.appendChild(wishTextElement);
+      listItem.appendChild(wishFromElement);
+      wishListElement.appendChild(listItem);
+    });
+  }
+
+  function renderWishlist() {
+    wishlistElement.innerHTML = '';
+
+    wishlistItems.forEach(function (wishlistItem) {
+      var listItem = document.createElement('li');
+      listItem.className = 'wishlist-item' + (wishlistItem.taken ? ' taken' : '');
+
+      var itemText = document.createElement('div');
+
+      var itemNameElement = document.createElement('div');
+      itemNameElement.className = 'item-name';
+      itemNameElement.textContent = wishlistItem.itemName;
+
+      var itemNoteElement = document.createElement('div');
+      itemNoteElement.className = 'item-note';
+      itemNoteElement.textContent = wishlistItem.itemNote;
+
+      itemText.appendChild(itemNameElement);
+      itemText.appendChild(itemNoteElement);
+      listItem.appendChild(itemText);
+
+      var statusControl = document.createElement('button');
+      statusControl.type = 'button';
+      statusControl.className = 'item-status';
+      statusControl.textContent = wishlistItem.taken ? 'Taken' : 'Mark as taken';
+
+      if (wishlistItem.taken) {
+        statusControl.disabled = true;
+        statusControl.setAttribute('aria-label', wishlistItem.itemName + ' is already taken');
+      } else {
+        statusControl.addEventListener('click', function () {
+          markWishlistItemTaken(wishlistItem);
+        });
+      }
+
+      listItem.appendChild(statusControl);
+      wishlistElement.appendChild(listItem);
+    });
+  }
+
+  /**
+   * @ Private methods
+   */
+
+  function markWishlistItemTaken(wishlistItem) {
+    wishlistItem.taken = true;
+    KenduriData.saveWeddingData(weddingData);
+    renderWishlist();
+  }
+
+  // ------------------------------------------------------------------
+  // Form handling
+  // ------------------------------------------------------------------
+
+  var rsvpForm = document.getElementById('rsvp-form');
+  var rsvpNameInput = document.getElementById('rsvp-name-input');
+  var rsvpMessageInput = document.getElementById('rsvp-message-input');
+  var rsvpStatus = document.getElementById('rsvp-status');
+
+  rsvpForm.addEventListener('submit', function (submitEvent) {
+    submitEvent.preventDefault();
+
+    var selectedChoice = rsvpForm.querySelector('input[name="attendance-choice"]:checked');
+    var guestName = rsvpNameInput.value.trim();
+
+    if (!guestName || !selectedChoice) {
+      rsvpStatus.textContent = 'Please fill in your name and choose yes or no.';
+      rsvpStatus.style.color = 'var(--no)';
+      return;
+    }
+
+    rsvps.unshift({
+      guestName: guestName,
+      attending: selectedChoice.value === 'attending',
+      message: rsvpMessageInput.value.trim()
+    });
+
+    // A message left with the RSVP doubles as a wish on the board.
+    if (rsvpMessageInput.value.trim()) {
+      wishes.unshift({
+        guestName: guestName,
+        wishText: rsvpMessageInput.value.trim()
+      });
+      renderWishList();
+    }
+
+    renderRsvpList();
+    KenduriData.saveWeddingData(weddingData);
+
+    rsvpStatus.textContent = 'Thank you, ' + guestName + ' — your response is on the list.';
+    rsvpStatus.style.color = 'var(--yes)';
+
+    rsvpForm.reset();
+  });
+
+  // ------------------------------------------------------------------
+  // Music — a simple synthesized kompang beat (no external audio files)
+  // ------------------------------------------------------------------
+
+  var musicToggleButton = document.getElementById('music-toggle');
+  var musicContext = null;
+  var musicBeatTimer = null;
+  var musicBeatStep = 0;
+
+  /**
+   * @ Private methods
+   */
+
+  // One kompang hit: a pitched drum membrane with a fast decay.
+  function playKompangHit(hitTime, baseFrequency, volume) {
+    var oscillatorNode = musicContext.createOscillator();
+    var oscillatorGain = musicContext.createGain();
+
+    oscillatorNode.type = 'sine';
+    oscillatorNode.frequency.setValueAtTime(baseFrequency, hitTime);
+    oscillatorNode.frequency.exponentialRampToValueAtTime(baseFrequency * 0.5, hitTime + 0.12);
+
+    oscillatorGain.gain.setValueAtTime(volume, hitTime);
+    oscillatorGain.gain.exponentialRampToValueAtTime(0.001, hitTime + 0.22);
+
+    oscillatorNode.connect(oscillatorGain);
+    oscillatorGain.connect(musicContext.destination);
+    oscillatorNode.start(hitTime);
+    oscillatorNode.stop(hitTime + 0.25);
+  }
+
+  // One open rim slap, brighter and shorter than the membrane hit.
+  function playKompangSlap(hitTime, volume) {
+    var noiseBuffer = musicContext.createBuffer(1, 2205, musicContext.sampleRate);
+    var noiseChannel = noiseBuffer.getChannelData(0);
+    for (var noiseIndex = 0; noiseIndex < noiseChannel.length; noiseIndex++) {
+      noiseChannel[noiseIndex] = (Math.random() * 2 - 1) * (1 - noiseIndex / noiseChannel.length);
+    }
+
+    var noiseSource = musicContext.createBufferSource();
+    var noiseFilter = musicContext.createBiquadFilter();
+    var noiseGain = musicContext.createGain();
+
+    noiseSource.buffer = noiseBuffer;
+    noiseFilter.type = 'bandpass';
+    noiseFilter.frequency.value = 1800;
+    noiseFilter.Q.value = 1.2;
+    noiseGain.gain.setValueAtTime(volume, hitTime);
+    noiseGain.gain.exponentialRampToValueAtTime(0.001, hitTime + 0.08);
+
+    noiseSource.connect(noiseFilter);
+    noiseFilter.connect(noiseGain);
+    noiseGain.connect(musicContext.destination);
+    noiseSource.start(hitTime);
+  }
+
+  // A 8-step kompang pattern loop: DUM-dum-slap-DUM-DUM-slap-dum-slap
+  function scheduleKompangBeat() {
+    var stepInterval = 0.22; // seconds per step, roughly 136 bpm
+    var currentStep = musicBeatStep % 8;
+
+    if (currentStep === 0 || currentStep === 3 || currentStep === 4) {
+      playKompangHit(musicContext.currentTime, 160, 0.5);
+    } else if (currentStep === 2 || currentStep === 5 || currentStep === 7) {
+      playKompangSlap(musicContext.currentTime, 0.25);
+    } else {
+      playKompangHit(musicContext.currentTime, 120, 0.2);
+    }
+
+    musicBeatStep += 1;
+    musicBeatTimer = setTimeout(scheduleKompangBeat, stepInterval * 1000);
+  }
+
+  musicToggleButton.addEventListener('click', function () {
+    var isPlaying = musicToggleButton.getAttribute('aria-pressed') === 'true';
+
+    if (isPlaying) {
+      clearTimeout(musicBeatTimer);
+      musicToggleButton.setAttribute('aria-pressed', 'false');
+      musicToggleButton.textContent = 'Play sample kompang beat';
+      return;
+    }
+
+    if (!musicContext) {
+      var AudioContextConstructor = window.AudioContext || window.webkitAudioContext;
+      musicContext = new AudioContextConstructor();
+    }
+    if (musicContext.state === 'suspended') {
+      musicContext.resume();
+    }
+
+    musicBeatStep = 0;
+    scheduleKompangBeat();
+    musicToggleButton.setAttribute('aria-pressed', 'true');
+    musicToggleButton.textContent = 'Stop kompang beat';
+  });
+
+  // ------------------------------------------------------------------
+  // Initial paint — the page must never open blank
+  // ------------------------------------------------------------------
+
+  renderWeddingDetails();
+  renderRsvpList();
+  renderWishList();
+  renderWishlist();
+})();
+</script>
+</body>
+</html>
